@@ -1,1 +1,7 @@
-0
+1400.00 , 2018-07-01 , paycheck
+-50.00 , 2018-12-06 , school expense
+-4.58 , 2019-02-14 , work expense
+-63.76 , 2019-04-26 , household expense
+100.00 , 2019-07-01 , paycheck
+-17.63 , 2019-10-16 , school expense
+-45.98 , 2020-02-26 , work expense

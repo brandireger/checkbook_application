@@ -17,6 +17,68 @@ def transaction_time():
     timeStr = dateTimeObj.strftime('%Y-%m-%d')
     print(f' , {timeStr}')
 
+# Menu functions
+def menu_choice():
+    choice = input('What would you like to do?\n\n\
+1) view current balance\n\
+2) record a debit (withdraw)\n\
+3) record a credit (deposit)\n\
+4) view all historical transactions\n\
+5) view all transactions for a single day\n\
+6) view all transactions in a category\n\
+7) exit\n')
+
+    while choice not in ['1', '2', '3', '4', '5', '6']:
+        print(f'Invalid choice: {choice}')
+        choice = input('What would you like to do?\n\n\
+1) view current balance\n\
+2) record a debit (withdraw)\n\
+3) record a credit (deposit)\n\
+4) view all historical transactions\n\
+5) view all transactions for a single day\n\
+6) view all transactions in a category\n\
+7) exit\n')
+
+    else:
+        return choice
+
+def debit_category_choice():
+    choice = input('Please select a category for this withdrawal: \n\
+a = work expense \n\
+b = school expense \n\
+c = household expense \n\
+d = other\n')
+    
+    while choice not in ['a', 'b', 'c', 'd']:
+        print('Invalid selection. Please try again.')
+        choice = input('Please select a category for this withdrawal: \n\
+a = work expense \n\
+b = school expense \n\
+c = household expense \n\
+d = other expense\n')
+    
+    else:
+        return choice
+
+def credit_category_choice():
+    choice = input('Please select a category for this deposit: \n\
+a = paycheck \n\
+b = gift \n\
+c = tax returns \n\
+d = other income\n')
+ 
+    while choice not in ['a', 'b', 'c', 'd']:
+        print('Invalid selection. Please try again.')
+        choice = input('Please select a category for this deposit: \n\
+a = paycheck \n\
+b = gift \n\
+c = tax returns \n\
+d = other\n')
+
+    else:
+        return choice
+
+
 # clean list of transactions
 def get_cleaned_transactions():
     with open(filename) as f:
@@ -39,37 +101,30 @@ def balance():
 
 # debit function
 def debit(debit_prompt):
+    debit_prompt = float(debit_prompt)
     with open(filename, 'a') as f:
-        if float(debit_prompt) > balance():
+        if debit_prompt > balance():
             return print('balance is too low for this debit')
         
         else:
-            category_choice = input('Please select a category for this withdrawal: \n\
-a = work expense \n\
-b = school expense \n\
-c = household expense \n\
-d = other ')
+            debit_category = debit_category_choice()
             
-            while category_choice not in ['a', 'b', 'c', 'd']:
+            while debit_category not in ['a', 'b', 'c', 'd']:
                 print('Invalid selection. Please try again.')
-                category_choice = input('Please select a category for this withdrawal: \n\
-a = work expense \n\
-b = school expense \n\
-c = household expense \n\
-d = other ')
+                debit_category_choice()
             
-            if category_choice == 'a':
-                f.write('\n' + f'-{float(debit_prompt)} , {transaction_time()} , work expense')
-                return print(f'Withdrew ${float(debit_prompt)}, new balance is ${round(balance(), 2)}.')
-            elif category_choice == 'b':
-                f.write('\n' + f'-{float(debit_prompt)} , {transaction_time()} , school expense')
-                return print(f'Withdrew ${float(debit_prompt)}, new balance is ${round(balance(), 2)}.')
-            elif category_choice == 'c':
-                f.write('\n' + f'-{float(debit_prompt)} , {transaction_time()} , household expense')
-                return print(f'Withdrew ${float(debit_prompt)}, new balance is ${round(balance(), 2)}.')
-            elif category_choice == 'd':
-                f.write('\n' + f'-{float(debit_prompt)} , {transaction_time()} , other expense')
-                return print(f'Withdrew ${float(debit_prompt)}, new balance is ${round(balance(), 2)}.')
+            if debit_category == 'a':
+                f.write('\n' + f'-{debit_prompt} , {transaction_time()} , work expense')
+                return print(f'Withdrew ${debit_prompt}, new balance is ${round(balance(), 2)}.')
+            elif debit_category == 'b':
+                f.write('\n' + f'-{debit_prompt} , {transaction_time()} , school expense')
+                return print(f'Withdrew ${debit_prompt}, new balance is ${round(balance(), 2)}.')
+            elif debit_category == 'c':
+                f.write('\n' + f'-{debit_prompt} , {transaction_time()} , household expense')
+                return print(f'Withdrew ${debit_prompt}, new balance is ${round(balance(), 2)}.')
+            elif debit_category == 'd':
+                f.write('\n' + f'-{debit_prompt} , {transaction_time()} , other expense')
+                return print(f'Withdrew ${debit_prompt}, new balance is ${round(balance(), 2)}.')
 
             else:
                 return print('Something went wrong!')
@@ -77,28 +132,22 @@ d = other ')
 # credit function
 def credit(credit_prompt):
     with open(filename, 'a') as f:
-        credit_category_choice = input('Please select a category for this deposit: \n\
-a = paycheck \n\
-b = gift \n\
-c = tax returns \n\
-d = other')
-        while credit_category_choice not in ['a', 'b', 'c', 'd']:
+        credit_category = credit_category_choice()
+
+        while credit_category not in ['a', 'b', 'c', 'd']:
             print('Invalid selection. Please try again.')
-            credit_category_choice = input('Please select a category for this deposit: \n\
-a = paycheck \n\
-b = gift \n\
-c = tax returns \n\
-d = other')
-        if credit_category_choice == 'a':
+            credit_category_choice()
+
+        if credit_category == 'a':
             f.write('\n' + f'{float(credit_prompt)} , {transaction_time()} , paycheck')
             return print(f'Deposited ${float(credit_prompt)}, new balance is ${round(balance(), 2)}.')
-        elif credit_category_choice == 'b':
+        elif credit_category == 'b':
             f.write('\n' + f'{float(credit_prompt)} , {transaction_time()} , gift')
             return print(f'Deposited ${float(credit_prompt)}, new balance is ${round(balance(), 2)}.')
-        elif credit_category_choice == 'c':
+        elif credit_category == 'c':
             f.write('\n' + f'{float(credit_prompt)} , {transaction_time()} , tax returns')
             return print(f'Deposited ${float(credit_prompt)}, new balance is ${round(balance(), 2)}.')
-        elif credit_category_choice == 'd':
+        elif credit_category == 'd':
             f.write('\n' + f'{float(credit_prompt)} , {transaction_time()} , other')
             return print(f'Deposited ${float(credit_prompt)}, new balance is ${round(balance(), 2)}.')
         else:
@@ -121,6 +170,58 @@ def trans_by_day(day_prompt):
     for x, y in enumerate(date_list, 1):
         print(x, y)
 
+# show all transactions in a category
+def get_categories():
+    cat_choice = input('What category would you like to select?\n\
+a = work expense \n\
+b = school expense \n\
+c = household expense \n\
+d = other expense\n\
+e = paycheck \n\
+f = gift \n\
+g = tax returns \n\
+h = other income\n')
+    
+    while cat_choice not in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']:
+        print('Invalid selection. Please try again.')
+        cat_choice = input('What category would you like to select?\n\
+a = work expense \n\
+b = school expense \n\
+c = household expense \n\
+d = other expense\n\
+e = paycheck \n\
+f = gift \n\
+g = tax returns \n\
+h = other income\n')
+        
+    if cat_choice == 'a':
+        category = 'work expense'
+    elif cat_choice == 'b':
+        category = 'school expense'
+    elif cat_choice == 'c':
+        category = 'household expense'
+    elif cat_choice == 'd':
+        category = 'other expense'
+    elif cat_choice == 'e':
+        category = 'paycheck'
+    elif cat_choice == 'f':
+        category = 'gift'
+    elif cat_choice == 'g':
+        category = 'tax returns'
+    elif cat_choice == 'b':
+        category = 'other income'
+    else: 
+        print('Something went wrong!')
+        
+    all_list = get_cleaned_transactions()
+    cat_list = []
+    for line in all_list:
+        if line[2] == category:
+            cat_list.append(line)
+    for x, y in enumerate(cat_list, 1):
+        print(x, y)
+    return print(f'Showing all transactions in category: {category}')
+
 # checkbook app
 print()
 print('~~~ Welcome to your terminal checkbook! ~~~')
@@ -129,25 +230,11 @@ print()
 
 
 print()
-userchoice = input('What would you like to do?\n\n\
-    1) view current balance\n\
-    2) record a debit (withdraw)\n\
-    3) record a credit (deposit)\n\
-    4) view all historical transactions\n\
-    5) view all transactions for a single day\n\
-    6) view all transactions in a category\n\
-    7) exit\n')
+userchoice = menu_choice()
 
-while userchoice not in ['1', '2', '3', '4', '5', '6']:
+while userchoice not in ['1', '2', '3', '4', '5', '6', '7']:
     print(f'Invalid choice: {userchoice}')
-    userchoice = input('What would you like to do?\n\n\
-        1) view current balance\n\
-        2) record a debit (withdraw)\n\
-        3) record a credit (deposit)\n\
-        4) view all historical transactions\n\
-        5) view all transactions for a single day\n\
-        6) view all transactions in a category\n\
-        7) exit\n')
+    userchoice = menu_choice()
 
 while userchoice != '7':
     # 1: view current balance
@@ -156,14 +243,7 @@ while userchoice != '7':
         print()
         print(f'Your current balance is ${round(balance(), 2)}.')
         print()
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')
+        userchoice = menu_choice()
 
     # 2: debit
     elif userchoice == '2':
@@ -172,14 +252,7 @@ while userchoice != '7':
         debit_prompt = input('How much is the debit? ')
         debit(debit_prompt)
         print()
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')   
+        userchoice = menu_choice() 
 
     # 3: credit
     elif userchoice == '3':
@@ -188,57 +261,29 @@ while userchoice != '7':
         credit_prompt = input('How much is the credit? ')
         credit(credit_prompt)
         print()
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')
+        userchoice = menu_choice()
     
     # 4: All transactions in file
     elif userchoice == '4':
         print(f'Your choice?: {userchoice}')
         print()
-        print('All transactions to date: ', '\n',  all_transactions())
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')
+        print(all_transactions())
+        userchoice = menu_choice()
 
     # 5: transactions on a given day
     elif userchoice == '5':
         print(f'Your choice?: {userchoice}')
         print()
-        day_prompt = input('Please enter a day in this format: yyyy-mm-dd')
-        print(f'All transaction on {day_prompt}' + trans_by_day(day_prompt))
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')
+        day_prompt = input('Please enter a day in this format: yyyy-mm-dd\n')
+        print(trans_by_day(day_prompt))
+        userchoice = menu_choice()
 
     # 6: view all transactions in a category
     elif userchoice == '6':
         print(f'Your choice?: {userchoice}')
         print()
-        print(f'Showing all transactions in category {userchoice}: ')
-        userchoice = input('What would you like to do?\n\n\
-            1) view current balance\n\
-            2) record a debit (withdraw)\n\
-            3) record a credit (deposit)\n\
-            4) view all historical transactions\n\
-            5) view all transactions for a single day\n\
-            6) view all transactions in a category\n\
-            7) exit\n')
+        get_categories()
+        userchoice = menu_choice()
         
     else:
         print('Something went wrong!')
@@ -246,8 +291,9 @@ while userchoice != '7':
 
 
 # 7: exit
-print(f'Your choice?: {userchoice}')
-print()
-print('Thanks, have a great day!')
+if userchoice == '7':
+    print(f'Your choice?: {userchoice}')
+    print()
+    print('Thanks, have a great day!')
 
 
