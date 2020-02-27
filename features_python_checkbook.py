@@ -7,7 +7,7 @@ from os import path
 
 if not path.exists(filename):
     with open(filename, 'w') as f:
-        f.write('0')
+        f.write(f'0 , {transaction_time} , starting balance')
 
 # Timestamp function
 from datetime import datetime
@@ -15,7 +15,7 @@ from datetime import datetime
 def transaction_time():
     dateTimeObj = datetime.now()
     timeStr = dateTimeObj.strftime('%Y-%m-%d')
-    print(f' , {timeStr}')
+    return print(f' , {timeStr}')
 
 # Menu functions
 def menu_choice():
@@ -28,7 +28,7 @@ def menu_choice():
 6) view all transactions in a category\n\
 7) exit\n')
 
-    while choice not in ['1', '2', '3', '4', '5', '6']:
+    while choice not in ['1', '2', '3', '4', '5', '6', '7']:
         print(f'Invalid choice: {choice}')
         choice = input('What would you like to do?\n\n\
 1) view current balance\n\
@@ -227,16 +227,16 @@ print()
 print('~~~ Welcome to your terminal checkbook! ~~~')
 print()
 
+menu_variable = True
 
-
-print()
-userchoice = menu_choice()
-
-while userchoice not in ['1', '2', '3', '4', '5', '6', '7']:
-    print(f'Invalid choice: {userchoice}')
+while menu_variable == True:
     userchoice = menu_choice()
+    print()
 
-while userchoice != '7':
+    while userchoice not in ['1', '2', '3', '4', '5', '6', '7']:
+        print(f'Invalid choice: {userchoice}')
+        userchoice = menu_choice()
+
     # 1: view current balance
     if userchoice == '1':
         print(f'Your choice?: {userchoice}')
@@ -285,15 +285,16 @@ while userchoice != '7':
         get_categories()
         userchoice = menu_choice()
         
+    elif userchoice == '7':
+        menu_variable = False
+
     else:
         print('Something went wrong!')
         break
 
-
 # 7: exit
-if userchoice == '7':
-    print(f'Your choice?: {userchoice}')
-    print()
-    print('Thanks, have a great day!')
+print(f'Your choice?: {userchoice}')
+print()
+print('Thanks, have a great day!')
 
 

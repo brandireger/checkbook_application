@@ -9,14 +9,6 @@ if not path.exists(filename):
     with open(filename, 'w') as f:
         f.write('0')
 
-# Timestamp function
-from datetime import datetime
-
-def transaction_time():
-    dateTimeObj = datetime.now()
-    timeStr = dateTimeObj.strftime('%Y-%m-%d %H:%M')
-    print(f' : {timeStr}')
-
 # balance function
 def balance(filename):
     with open(filename) as f:
